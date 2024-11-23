@@ -14,6 +14,7 @@
       {
         "src": "/calc-fe",
         "dest": "/math-notes/calc-fe"
+        
       },
       {
         "src": "/calc-be",
