@@ -1,5 +1,12 @@
 {
   "dependencies": {
-    "inflight": "^1.0.6"
+    "inflight": "^1.0.6",
+    "react-scripts": "^5.0.1"
+  },
+  "scripts": {
+    "dev": "npm run dev --prefix math-notes/calc-fe && npm run dev --prefix math-notes/calc-be",
+    "build-fe": "cd math-notes/calc-fe && npm run build",
+    "build-be": "cd math-notes/calc-be && npm run build",
+    "build": "npm run build-fe && npm run build-be"
   }
 }
