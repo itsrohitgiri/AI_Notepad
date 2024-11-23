@@ -5,7 +5,7 @@
       "@/*": ["./src/*"]
     },
   },
-  "compilerOptions": {
+  "compilerOption": {
       "skipLibCheck": true,
       "noEmitOnError": false,
       "strict": false
