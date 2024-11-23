@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "math-notes/calc-fe/package.json",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "math-notes/calc-be/package.json",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/calc-fe",
+        "dest": "/math-notes/calc-fe"
+      },
+      {
+        "src": "/calc-be",
+        "dest": "/math-notes/calc-be"
+      }
+    ]
+  }  
