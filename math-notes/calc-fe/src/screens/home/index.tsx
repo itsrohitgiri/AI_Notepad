@@ -897,12 +897,13 @@ const cursorStyle = isEraser
                 <Tooltip label="Solve By AI" withArrow>
                 <button className="toolbar-button rounded-full" onClick={runRoute}>
                 <img
-                  src="../../../icons8-ai-ezgif.com-loop-count.gif" 
-                  width="30px" 
-                  height="20px" 
-                  alt="AI Button" 
-                  style={{ display: "block" }}
+                      src="/icons8-ai-ezgif.com-loop-count.gif"
+                      width="30px"
+                      height="20px"
+                      alt="AI Button"
+                      style={{ display: "block" }}
                 />
+
                 </button>
                 </Tooltip>
                 <Tooltip label="Reset LaTeX Results" withArrow>
