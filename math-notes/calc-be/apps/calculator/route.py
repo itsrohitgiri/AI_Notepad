@@ -7,7 +7,7 @@ from PIL import Image
 
 router = APIRouter()
 
-@router.post('/')
+@router.post('/calculate')
 async def run(data: ImageData):
     try:
         # Decode image data from base64
