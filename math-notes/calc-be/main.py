@@ -27,7 +27,7 @@ async def root():
     return {"message": "Server is running"}
 
 # Include routes
-app.include_router(calculator_router, tags=["calculate"])
+app.include_router(calculator_router, prefix="/calculate", tags=["calculate"])
 
 if __name__ == "__main__":
     # Get the PORT from environment variables (required for Render)
