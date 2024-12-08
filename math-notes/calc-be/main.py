@@ -15,7 +15,7 @@ app = FastAPI(lifespan=lifespan)
 # Middleware for handling CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],  # Allow all origins (modify if needed for security)
+    allow_origins=['https://ai-notepad.vercel.app/'],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
