@@ -290,13 +290,13 @@ export default function Home() {
     
     
 
-        const runRoute = async () => {
+    const runRoute = async () => {
         const canvas = canvasRef.current;
 
         if (canvas) {
             const response = await axios({
                 method: 'post',
-                url: `${import.meta.env.API_URL}/`,
+                url: `${import.meta.env.API_URL}/calculate`,
                 data: {
                     image: canvas.toDataURL('image/png'),
                     dict_of_vars: dictOfVars,
@@ -346,6 +346,28 @@ export default function Home() {
             });
         }
     };
+
+    const [shapeStart, setShapeStart] = useState<{ x: number; y: number } | null>(null);
+
+const startDrawing = (e: React.PointerEvent<HTMLCanvasElement>) => {
+  e.preventDefault();
+  const { offsetX, offsetY } = e.nativeEvent;
+  if (shapeMode) {
+    setShapeStart({ x: offsetX, y: offsetY });
+  } else {
+    saveCanvasState();
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.beginPath();
+        ctx.moveTo(offsetX, offsetY);
+        setIsDrawing(true);
+        lastPos.current = { x: offsetX, y: offsetY };
+      }
+    }
+  }
+};
 
 
 const draw = (e: React.PointerEvent<HTMLCanvasElement>) => {
