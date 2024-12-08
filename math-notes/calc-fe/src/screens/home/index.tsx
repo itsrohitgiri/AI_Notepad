@@ -290,62 +290,74 @@ export default function Home() {
     
     
 
-    const runRoute = async () => {
-        const canvas = canvasRef.current;
+const runRoute = async () => {
+  const canvas = canvasRef.current;
 
-        if (canvas) {
-            const response = await axios({
-                method: 'post',
-                url: `${import.meta.env.API_URL}/`,
-                data: {
-                    image: canvas.toDataURL('image/png'),
-                    dict_of_vars: dictOfVars,
-                },
-            });
+  if (canvas) {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `${import.meta.env.API_URL}/`, 
+        data: {
+          image: canvas.toDataURL('image/png'),
+          dict_of_vars: dictOfVars,
+        },
+      });
 
-            const resp = await response.data;
-            console.log('Response', resp);
-            resp.data.forEach((data: Response) => {
-                if (data.assign === true) {
-                    setDictOfVars({
-                        ...dictOfVars,
-                        [data.expr]: data.result,
-                    });
-                }
-            });
+      const resp = await response.data;
+      console.log('Response:', resp);
 
-            // Determine latex position
-            const ctx = canvas.getContext('2d');
-            const imageData = ctx!.getImageData(0, 0, canvas.width, canvas.height);
-            let minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
-
-            for (let y = 0; y < canvas.height; y++) {
-                for (let x = 0; x < canvas.width; x++) {
-                    const i = (y * canvas.width + x) * 4;
-                    if (imageData.data[i + 3] > 0) { // If pixel is not transparent
-                        minX = Math.min(minX, x);
-                        minY = Math.min(minY, y);
-                        maxX = Math.max(maxX, x);
-                        maxY = Math.max(maxY, y);
-                    }
-                }
-            }
-
-            const centerX = (minX + maxX) / 2;
-            const centerY = (minY + maxY) / 2;
-            setLatexPosition({ x: centerX, y: centerY });
-
-            resp.data.forEach((data: Response) => {
-                setTimeout(() => {
-                    setResult({
-                        expression: data.expr,
-                        answer: data.result,
-                    });
-                    renderLatexToCanvas(data.expr, data.result); // Render latex result
-                }, 1000);
-            });
+      resp.data.forEach((data: Response) => {
+        if (data.assign === true) {
+          setDictOfVars({
+            ...dictOfVars,
+            [data.expr]: data.result,
+          });
         }
-    };
+      });
+
+      // Determine latex position logic
+      const ctx = canvas.getContext('2d');
+      const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
+      if (imageData) {
+        let minX = canvas.width,
+          minY = canvas.height,
+          maxX = 0,
+          maxY = 0;
+
+        for (let y = 0; y < canvas.height; y++) {
+          for (let x = 0; x < canvas.width; x++) {
+            const i = (y * canvas.width + x) * 4;
+            if (imageData.data[i + 3] > 0) {
+              minX = Math.min(minX, x);
+              minY = Math.min(minY, y);
+              maxX = Math.max(maxX, x);
+              maxY = Math.max(maxY, y);
+            }
+          }
+        }
+
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+        setLatexPosition({ x: centerX, y: centerY });
+      }
+
+      // Set the results with delayed rendering
+      resp.data.forEach((data: Response) => {
+        setTimeout(() => {
+          setResult({
+            expression: data.expr,
+            answer: data.result,
+          });
+          renderLatexToCanvas(data.expr, data.result);
+        }, 1000);
+      });
+    } catch (error) {
+      console.error('Error during POST request', error);
+    }
+  }
+};
+
 
     const [shapeStart, setShapeStart] = useState<{ x: number; y: number } | null>(null);
 
